@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Settings from '@/components/AdminPages/AdminSettings/Settings';
 import UseFetch from '@/hooks/useFetch';
 import PageLoader from '@/components/AdminReusables/PageLoager.jsx';
@@ -32,18 +32,35 @@ const AdminSettings = () => {
   }
 
   if (error) {
-    return <h3 style={{display : 'flex', justifyContent: 'center', alignItems: 'center', height:'75vh', textAlign: 'center'}}>Unable to fetch data | Please try again</h3>;
+    return (
+      <h3
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '75vh',
+          textAlign: 'center',
+        }}
+      >
+        Unable to fetch data | Please try again
+      </h3>
+    );
   }
-
 
   if (!userData) {
     return <PageLoader />;
   }
 
   return (
-    <div style={{ position: 'relative' }} className="dummy">
-      <Settings token={token} admin={true} userData={userData}/>
-    </div>
+    <>
+      {' '}
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div style={{ position: 'relative' }} className="dummy">
+        <Settings token={token} admin={true} userData={userData} />
+      </div>
+    </>
   );
 };
 

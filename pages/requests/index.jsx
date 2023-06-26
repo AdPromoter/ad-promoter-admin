@@ -86,6 +86,9 @@ const Settings = () => {
 
   return (
     <Container>
+            <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {responsive ? (
         <RequestSettings>
           <main>

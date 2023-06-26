@@ -10,13 +10,19 @@ const ReportDetails = ({ reportAdsDetails }) => {
   }, [token]);
 
   return (
-    <div className="report_details">
-      <h1>Product Name: {reportAdsDetails.productName}</h1>
-      <h1>type: {reportAdsDetails.type}</h1>
-      <h1>adStatus: {reportAdsDetails.adStatus}</h1>
-      <h1>conversions: {reportAdsDetails.conversions}</h1>
-      <h1>target: {reportAdsDetails.target}</h1>
-    </div>
+    <>
+      {' '}
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="report_details">
+        <h1>Product Name: {reportAdsDetails.productName}</h1>
+        <h1>type: {reportAdsDetails.type}</h1>
+        <h1>adStatus: {reportAdsDetails.adStatus}</h1>
+        <h1>conversions: {reportAdsDetails.conversions}</h1>
+        <h1>target: {reportAdsDetails.target}</h1>
+      </div>
+    </>
   );
 };
 

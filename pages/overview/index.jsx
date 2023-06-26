@@ -181,6 +181,10 @@ const Index = () => {
 
   return (
     <>
+          <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       {responsive ? (
         <ContainerStyle>
           <div className="grid">

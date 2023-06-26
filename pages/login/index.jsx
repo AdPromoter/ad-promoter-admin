@@ -52,7 +52,6 @@ const Login = () => {
     if (userToken) {
       router.push('/overview');
     }
-  
   }, [
     router,
     setIsLoginInputWithValue,
@@ -112,6 +111,9 @@ const Login = () => {
 
   return (
     <>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Toaster />
       {responsive ? (
         <BgContainer image={bg}>
