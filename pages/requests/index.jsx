@@ -21,6 +21,8 @@ import { useWidth } from '@/hooks';
 import UseFetch from '@/hooks/useFetch';
 import PageLoader from '@/components/AdminReusables/PageLoager.jsx/index.jsx';
 import Filter from '@/components/AdminReusables/Filter';
+import Head from 'next/head';
+
 
 const breakpoint = 1024;
 const Settings = () => {
@@ -86,6 +88,9 @@ const Settings = () => {
 
   return (
     <Container>
+            <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {responsive ? (
         <RequestSettings>
           <main>

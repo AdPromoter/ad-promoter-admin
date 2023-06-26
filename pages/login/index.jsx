@@ -12,6 +12,7 @@ import PreferenceContext from '@/context/signupContext';
 import SignupContext from '@/context/signupContext';
 import { useWidth } from '@/hooks';
 import { Toaster, toast } from 'react-hot-toast';
+import Head from 'next/head';
 
 const breakpoint = 767;
 const Login = () => {
@@ -52,7 +53,6 @@ const Login = () => {
     if (userToken) {
       router.push('/overview');
     }
-  
   }, [
     router,
     setIsLoginInputWithValue,
@@ -112,6 +112,9 @@ const Login = () => {
 
   return (
     <>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Toaster />
       {responsive ? (
         <BgContainer image={bg}>

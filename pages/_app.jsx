@@ -41,7 +41,6 @@ function MyApp({ Component, pageProps }) {
           name="description"
           content="Explore The World Of Seamless Online Promotion"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <AuthContextProvider>

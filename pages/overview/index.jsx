@@ -25,6 +25,8 @@ import userMo from '@/public/assets/userMo.svg';
 import userTom from '@/public/assets/userTom.svg';
 import flash from '@/public/assets/flash.svg';
 import cup from '@/public/assets/cupIcon.svg';
+import Head from 'next/head';
+
 
 const breakpoint = 1024;
 const Index = () => {
@@ -181,6 +183,10 @@ const Index = () => {
 
   return (
     <>
+          <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       {responsive ? (
         <ContainerStyle>
           <div className="grid">
