@@ -18,6 +18,7 @@ import SuccessModal from '@/components/AdminModals/walletModals/SuccessModal';
 import UseFetch from '@/hooks/useFetch';
 import { useWidth } from '@/hooks';
 import PageLoader from '@/components/AdminReusables/PageLoager.jsx/index.jsx';
+import Head from 'next/head';
 
 const breakpoint = 1024;
 const AdminWallet = () => {

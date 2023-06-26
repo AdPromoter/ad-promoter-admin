@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Settings from '@/components/AdminPages/AdminSettings/Settings';
 import UseFetch from '@/hooks/useFetch';
 import PageLoader from '@/components/AdminReusables/PageLoager.jsx';
+import Head from 'next/head';
+
 
 const AdminSettings = () => {
   const [token, setToken] = useState(true);

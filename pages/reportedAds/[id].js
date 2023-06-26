@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
 import GetToken from '@/context/token';
+import Head from 'next/head';
+
 
 const ReportDetails = ({ reportAdsDetails }) => {
   const [token, setToken] = useState(GetToken());

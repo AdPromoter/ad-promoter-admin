@@ -12,6 +12,7 @@ import PreferenceContext from '@/context/signupContext';
 import SignupContext from '@/context/signupContext';
 import { useWidth } from '@/hooks';
 import { Toaster, toast } from 'react-hot-toast';
+import Head from 'next/head';
 
 const breakpoint = 767;
 const Login = () => {
