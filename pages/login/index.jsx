@@ -51,7 +51,7 @@ const Login = () => {
     }
 
     if (userToken) {
-      router.push('/overview');
+      // router.push('/overview');
     }
   }, [
     router,
@@ -70,7 +70,7 @@ const Login = () => {
       setLoading(true);
       const fetchData = async () => {
         const request = {
-          phoneNumber: userPhoneNumber,
+          email: userPhoneNumber,
           password: userPassword,
         };
         try {
@@ -86,17 +86,19 @@ const Login = () => {
             }
           );
           const json = await response.json();
+
+          console.log(json)
           if (json.success) {
             toast.success('Login Successful');
+            setLoading(false);
+            router.push('/overview');
           }
-          localStorage.setItem('user', JSON.stringify(json));
-          if (!json.success && json.msg.includes('Credentials Incorrect')) {
+          // localStorage.setItem('user', JSON.stringify(json));
+          if (!json.success) {
+            console.log(json.msg.includes('Credentials Incorrect'));
             setLoading(false);
             setIsInputWithValue(true);
             toast.error('Invalid Details, Please try again');
-          } else {
-            setLoading(false);
-            router.push('/overview');
           }
         } catch (error) {
           console.error(error);
