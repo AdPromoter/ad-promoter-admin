@@ -10,7 +10,7 @@ import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import SignupContext from '@/context/signupContext';
 import { useWidth } from '@/hooks';
 import { toast } from 'react-hot-toast';
-
+git 
 const breakpoint = 767;
 const Login = () => {
   const router = useRouter();
@@ -114,7 +114,7 @@ const Login = () => {
               </div>
               <form action="" onSubmit={handleSubmit}>
                 <div className="email">
-                  <label htmlFor="email">Your Phone Numbers</label>
+                  <label htmlFor="email">Your Email Address</label>
                   <input
                     type="text"
                     id="email"
