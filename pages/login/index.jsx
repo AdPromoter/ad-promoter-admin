@@ -5,14 +5,11 @@ import Image from 'next/image';
 import logo from '@/public/assets/newOnboardLogo.svg';
 import Button from '@/components/AdminReusables/authBtn/index';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { useContext, useState, useEffect } from 'react';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
-import PreferenceContext from '@/context/signupContext';
 import SignupContext from '@/context/signupContext';
 import { useWidth } from '@/hooks';
-import { Toaster, toast } from 'react-hot-toast';
-import Head from 'next/head';
+import { toast } from 'react-hot-toast';
 
 const breakpoint = 767;
 const Login = () => {
@@ -20,16 +17,10 @@ const Login = () => {
   const { responsive } = useWidth(breakpoint);
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [userPhoneNumber, setUserPhoneNumber] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userRole, setUserRole] = useState('');
   const { setIsInputWithValue } = useContext(SignupContext);
-  const { isLoginInputWithValue, setIsLoginInputWithValue } =
-    useContext(PreferenceContext);
-  const [token, setToken] = useState(true);
-
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const userRole = JSON.parse(localStorage.getItem('token'));
@@ -38,7 +29,7 @@ const Login = () => {
       setUserRole(userRole.user.role);
     }
 
-    if (userPhoneNumber !== '' || userPassword !== '') {
+    if (userEmail !== '' || userPassword !== '') {
       setIsInputWithValue(true);
     } else {
       setIsInputWithValue(false);
@@ -46,31 +37,26 @@ const Login = () => {
 
     const userToken = JSON.parse(localStorage.getItem('user'));
 
-    if (userToken) {
-      setToken(userToken);
-    }
-
-    if (userToken) {
-      // router.push('/overview');
+    if (userToken && userToken.success) {
+      router.push('/overview');
     }
   }, [
     router,
-    setIsLoginInputWithValue,
     userEmail,
     userPassword,
     userRole,
-    userPhoneNumber,
+    userEmail,
     setIsInputWithValue,
   ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (userPhoneNumber && userPassword !== '') {
+    if (userEmail && userPassword !== '') {
       setLoading(true);
       const fetchData = async () => {
         const request = {
-          email: userPhoneNumber,
+          email: userEmail,
           password: userPassword,
         };
         try {
@@ -86,24 +72,26 @@ const Login = () => {
             }
           );
           const json = await response.json();
-
-          console.log(json)
           if (json.success) {
-            toast.success('Login Successful');
+            toast.success(
+              <span style={{ fontSize: '14px' }}>Login successful</span>
+            );
             setLoading(false);
+            localStorage.setItem('user', JSON.stringify(json));
             router.push('/overview');
-          }
-          // localStorage.setItem('user', JSON.stringify(json));
-          if (!json.success) {
-            console.log(json.msg.includes('Credentials Incorrect'));
+          } else if (!json.success) {
             setLoading(false);
             setIsInputWithValue(true);
-            toast.error('Invalid Details, Please try again');
+            toast.error(
+              <span style={{ fontSize: '14px' }}>
+                Invalid details, please try again
+              </span>
+            );
           }
         } catch (error) {
-          console.error(error);
-          return toast.error('Invalid details, please try again');
+          setLoading(false);
           setError(error);
+          return toast.error('Invalid details, please try again');
         }
       };
 
@@ -114,10 +102,6 @@ const Login = () => {
 
   return (
     <>
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Toaster />
       {responsive ? (
         <BgContainer image={bg}>
           <Overlay className="overlay">
@@ -135,8 +119,8 @@ const Login = () => {
                     type="text"
                     id="email"
                     required
-                    value={userPhoneNumber}
-                    onChange={(e) => setUserPhoneNumber(e.target.value)}
+                    value={userEmail}
+                    onChange={(e) => setUserEmail(e.target.value)}
                   />
                 </div>
                 <div className="password">
@@ -187,13 +171,13 @@ const Login = () => {
           </div>
           <form action="" onSubmit={handleSubmit}>
             <div className="email">
-              <label htmlFor="email">Your Phone Number</label>
+              <label htmlFor="email">Your Email Adresss</label>
               <input
                 type="text"
                 id="email"
                 required
-                value={userPhoneNumber}
-                onChange={(e) => setUserPhoneNumber(e.target.value)}
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
               />
             </div>
             <div className="password">
