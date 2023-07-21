@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   ContainerStyle,
   ContainerStyleMobile,
-} from '@/components/AdminPages/Overview/index.style';
+} from '@/components/AdminPages/AdminOverview/index.style';
 import UseFetch from '@/hooks/useFetch';
 import { useWidth } from '@/hooks';
 import {
@@ -12,7 +12,7 @@ import {
   TopAdvertPromoters,
   AdvertGraph,
   Filter,
-} from '@/components/AdminPages/Overview';
+} from '@/components/AdminPages/AdminOverview';
 import PageLoader from '@/components/AdminReusables/PageLoager.jsx/index.jsx';
 import edit from '@/public/assets/edit-2.svg';
 import gallery from '@/public/assets/gallery-tick.svg';
