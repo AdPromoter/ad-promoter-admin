@@ -20,31 +20,28 @@ import people from '@/public/assets/people.svg';
 import profileCircle from '@/public/assets/profile-circle.svg';
 import profileDelete from '@/public/assets/profile-delete.svg';
 import userSquare from '@/public/assets/user-square.svg';
-import userMariam from '@/public/assets/userMariam.svg';
-import userMo from '@/public/assets/userMo.svg';
-import userTom from '@/public/assets/userTom.svg';
 import flash from '@/public/assets/flash.svg';
 import cup from '@/public/assets/cupIcon.svg';
-import Head from 'next/head';
-
+import { useRouter } from 'next/router';
 
 const breakpoint = 1024;
 const Index = () => {
   const { responsive } = useWidth(breakpoint);
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const router = useRouter();
   const [token, setToken] = useState(true);
   const [tokenAvailale, setTokenAvailable] = useState(false);
 
   useEffect(() => {
     const userToken = JSON.parse(localStorage.getItem('user'));
-    console.log(userToken);
     if (userToken) {
       setToken(userToken.token);
       setTokenAvailable(true);
     }
 
-    console.log(userToken)
+    if (userToken && !userToken.success) {
+      router.push('/login');
+    }
   }, []);
 
   // User Data
@@ -76,7 +73,6 @@ const Index = () => {
     tokenAvailale,
     'https://api.ad-promoter.com/api/v1/ads/top-creators?pageSize=5'
   );
-
 
   const summary = dashboardData && [
     {
@@ -138,12 +134,11 @@ const Index = () => {
     {
       icon: profileDelete,
       name: 'Blocklisted Users',
-      num: 'no data',
+      num: 'null',
       bg: '#FBC4BC',
       shadow: '1px 2px 4px rgba(33, 76, 95, 0.2)',
     },
   ];
-  
 
   const onShowDropDownHandler = () => {
     setShowDropdown(!showDropdown);
@@ -152,10 +147,6 @@ const Index = () => {
   const onCloseDropdownHandler = () => {
     setShowDropdown(!showDropdown);
   };
-
-  if (pending) {
-    return <PageLoader />;
-  }
 
   if (error) {
     return (
@@ -173,20 +164,18 @@ const Index = () => {
     );
   }
 
-  console.log(dashboardData)
-  console.log(error)
-  console.log(pending)
-
-  if (!summary || !userData || !topPlacersData || !topPromotersData) {
+  if (
+    !summary ||
+    !userData ||
+    !topPlacersData ||
+    !topPromotersData ||
+    pending
+  ) {
     return <PageLoader />;
   }
 
   return (
     <>
-          <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       {responsive ? (
         <ContainerStyle>
           <div className="grid">
