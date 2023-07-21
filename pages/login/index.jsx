@@ -114,7 +114,7 @@ const Login = () => {
               </div>
               <form action="" onSubmit={handleSubmit}>
                 <div className="email">
-                  <label htmlFor="email">Your Phone Numbers</label>
+                  <label htmlFor="email">Your Email Address</label>
                   <input
                     type="text"
                     id="email"
