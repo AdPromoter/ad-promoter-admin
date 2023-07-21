@@ -10,7 +10,7 @@ import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import SignupContext from '@/context/signupContext';
 import { useWidth } from '@/hooks';
 import { toast } from 'react-hot-toast';
-
+ 
 const breakpoint = 767;
 const Login = () => {
   const router = useRouter();

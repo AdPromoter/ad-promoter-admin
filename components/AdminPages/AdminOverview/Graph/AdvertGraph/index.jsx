@@ -1,5 +1,5 @@
 import { useWidth } from '@/hooks';
-import AdminChart from '@/components/AdminPages/Overview/Charts/adminChart';
+import AdminChart from '@/components/AdminPages/AdminOverview/Charts/adminChart';
 const breakpoint = 1024;
 
 const AdvertGraph = ({ dashboardData }) => {
