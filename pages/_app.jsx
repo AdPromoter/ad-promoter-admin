@@ -7,6 +7,8 @@ import { SignupProvider } from '@/context/signupContext';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
+import { Toaster } from 'react-hot-toast';
+
 
 function withAuth(Component) {
   return function AuthenticatedComponent(props) {
@@ -44,6 +46,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <AuthContextProvider>
+        <Toaster />
         <NotificationProvider>
           <SignupProvider>
             <VariableStyle />
