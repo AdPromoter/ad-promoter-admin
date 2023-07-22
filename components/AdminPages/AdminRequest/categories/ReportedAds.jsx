@@ -3,16 +3,9 @@ import Image from 'next/image';
 import Backdrop from '@/components/DiscoveryFolder/ReportModal/Backdrop';
 import { UndoContainer } from '../../AdminActivities/adminActivities.style';
 import close from '@/public/assets/close-circle-small.svg';
-import {
-  send,
-  cup,
-  refresh,
-  moneySend,
-  status,
-} from '@/public/assets/icon';
+import { send, cup, refresh, moneySend, status } from '@/public/assets/icon';
 import Link from 'next/link';
 import { useWidth } from '@/hooks';
-import profile1 from '@/public/assets/hassan.svg';
 import trash from '@/public/assets/trash.svg';
 import { AdDisplay } from '../request.style';
 
@@ -56,7 +49,25 @@ const ReportedAds = ({ reportData, pending, error }) => {
                         <p>
                           <span className="group">
                             {' '}
-                            <Image src={profile1} width={15} />
+                            {/* <Image src={profile1} width={15} /> */}
+                            <div
+                              className="noImage"
+                              style={{
+                                width: '25px',
+                                height: '25px',
+                                textAlign: 'center',
+                                background: '#a09ef9',
+                                fontSize: '10px',
+                                textTransform: 'uppercase',
+                                color: '#ffffff',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '50%',
+                              }}
+                            >
+                              {data.productName.slice(0, 2)}
+                            </div>
                             <span className="title">Product Name</span>
                           </span>
                           <span className="data-name">{data.productName}</span>
@@ -129,7 +140,7 @@ const ReportedAds = ({ reportData, pending, error }) => {
           </table>
         </div>
       ) : (
-        <AdDisplay className='ad-display'>
+        <AdDisplay className="ad-display">
           {' '}
           {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)} />}
           <UndoContainer
@@ -153,13 +164,31 @@ const ReportedAds = ({ reportData, pending, error }) => {
                 <div className="ad-column" key={data.id}>
                   <div className="ad-content">
                     <div className="ad-inner">
-                      <Image src={profile1} alt="profile" />
-                      <span>Maharm Hassanli</span>
+                      {/* <Image src={profile1} alt="profile" /> */}
+                      <div
+                        className="noImage"
+                        style={{
+                          width: '25px',
+                          height: '25px',
+                          textAlign: 'center',
+                          background: '#a09ef9',
+                          fontSize: '10px',
+                          textTransform: 'uppercase',
+                          color: '#ffffff',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderRadius: '50%',
+                        }}
+                      >
+                        {data.productName.slice(0, 2)}
+                      </div>
+                      <span>{data.productName}</span>
                     </div>
                     <div>
                       <div className="status-text">
                         <Image src={status} width={10} />
-                        <p >Status</p>
+                        <p>Status</p>
                       </div>
                       <span>
                         <button
@@ -192,10 +221,10 @@ const ReportedAds = ({ reportData, pending, error }) => {
                       <span>{data.type}</span>
                     </div>
                   </div>
-                  <div className='view-button-report-div'>
-                  <Link href={`/reportedAds/${data._id}`}>
-                    <button className="view-button">View</button>
-                  </Link>
+                  <div className="view-button-report-div">
+                    <Link href={`/reportedAds/${data._id}`}>
+                      <button className="view-button">View</button>
+                    </Link>
                   </div>
                 </div>
               ))}

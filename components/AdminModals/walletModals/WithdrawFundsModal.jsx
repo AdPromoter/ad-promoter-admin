@@ -63,9 +63,9 @@ const WithdrawFundsModal = (props) => {
               </div>
             </div>
             <div className="funds__home">
-              <Link href="/promoters">
-                <a>Home</a>
-              </Link>
+              <button onClick={props.onClose}>
+                <a>Cancel</a>
+              </button>
             </div>
           </div>
           </div>

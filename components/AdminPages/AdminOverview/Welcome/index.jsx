@@ -3,17 +3,20 @@ import { adminFrame } from "@/public/assets/image";
 import { Hands } from "@/public/assets/icon";
 
 const Welcome = (props) => {
+
+  console.log(props.userData.profilePicture);
+  
   return (
     <div className="welcome">
       <div className="user">
-        {props.userData && props.userData.profilePicture == 'string' ? (
+        {props.userData && props.userData.profilePicture == undefined ? (
           <div
             className="noImage"
             style={{
               width: '134px',
               height: '134px',
               textAlign: 'center',
-              background: 'green',
+              background: '#a09ef9',
               fontSize: '50px',
               textTransform: 'uppercase',
               color: '#ffffff',

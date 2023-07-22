@@ -14,7 +14,7 @@ function withAuth(Component) {
   return function AuthenticatedComponent(props) {
     const router = useRouter();
     const [token, setToken] = useState(true);
-    useEffect(() => {
+    useEffect(() => { 
       const userToken = JSON.parse(localStorage.getItem('user'));
 
       if (userToken) {

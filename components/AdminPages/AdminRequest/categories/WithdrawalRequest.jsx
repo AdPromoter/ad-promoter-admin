@@ -7,14 +7,12 @@ import close from '@/public/assets/close-circle-small.svg';
 import { tick, cancel } from '@/public/assets/icon';
 import { useWidth } from '@/hooks';
 import { btnTick, btnCancel } from '@/public/assets/icon';
-import { withdrawGridData } from '@/data/RequestData/users';
 import { AdDisplay } from '../request.style';
+import TruncatedText from '@/components/AdminReusables/TruncatedText';
 
 const breakpoint = 1024;
-const WithdrawalRequest = () => {
+const WithdrawalRequest = ({ withdrawalData }) => {
   const { responsive } = useWidth(breakpoint);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [rowData, setRowData] = useState(withdrawGridData);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
   const handleCheckbox = (e) => {
@@ -67,27 +65,44 @@ const WithdrawalRequest = () => {
               </tr>
             </thead>
             <tbody>
-              {rowData.map((data) => (
-                <tr className="row" key={data.id}>
-                  <td>{data.id}</td>
+              {withdrawalData.data.map((data, index) => (
+                <tr className="row" key={data.user}>
+                  <td>{index + 1}</td>
                   <td>
-                    {data.name.map((name, index) => (
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {/* <Image src={name.profile} alt="profile" /> */}
                       <div
+                        className="noImage"
                         style={{
+                          width: '25px',
+                          height: '25px',
+                          textAlign: 'center',
+                          background: '#a09ef9',
+                          fontSize: '10px',
+                          textTransform: 'uppercase',
+                          color: '#ffffff',
                           display: 'flex',
-                          gap: '0.5rem',
+                          justifyContent: 'center',
                           alignItems: 'center',
+                          borderRadius: '50%',
                         }}
-                        key={index}
                       >
-                        <Image src={name.profile} alt="profile" />
-                        <p>{name.user}</p>
+                        {data.name.slice(0, 2)}
                       </div>
-                    ))}
+                      <p>
+                        <TruncatedText maxLength={25} text={data.name} />
+                      </p>
+                    </div>
                   </td>
-                  <td>{data.userId}</td>
-                  <td>{data.requestedAmount}</td>
-                  <td>{data.balance}</td>
+                  <td>#{data.user}</td>
+                  <td>₦{data.amount}</td>
+                  <td>₦{data.amount}</td>
                   <td className="action-space">
                     <Image src={tick} /> <Image src={cancel} />
                   </td>
@@ -96,7 +111,7 @@ const WithdrawalRequest = () => {
                       type="checkbox"
                       id={data.id}
                       checked={data.value}
-                      onChange={handleCheckbox}
+                      // onChange={handleCheckbox}
                     />
                   </td>
                 </tr>
@@ -105,7 +120,7 @@ const WithdrawalRequest = () => {
           </table>
         </div>
       ) : (
-        <AdDisplay className='ad-display'>
+        <AdDisplay className="ad-display">
           {' '}
           {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)} />}
           <UndoContainer
@@ -125,19 +140,38 @@ const WithdrawalRequest = () => {
               <Image src={trash} alt="trash" />
             </div>
 
-            {withdrawGridData.map((item) => (
-              <div className="ad-column" key={item.id}>
+            {withdrawalData.data.map((data) => (
+              <div className="ad-column" key={data.id}>
                 <div className="ad-content">
                   <div className="ad-inner">
-                    <Image src={item.name[0].profile} alt="trash" />
-                    <span>{item.name[0].user}</span>
+                    <div
+                      className="noImage"
+                      style={{
+                        width: '25px',
+                        height: '25px',
+                        textAlign: 'center',
+                        background: '#a09ef9',
+                        fontSize: '10px',
+                        textTransform: 'uppercase',
+                        color: '#ffffff',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '50%',
+                      }}
+                    >
+                      {data.name.slice(0, 2)}
+                    </div>
+                    <span>
+                      <TruncatedText maxLength={25} text={data.name} />
+                    </span>
                   </div>
                   <div>
                     <input
                       type="checkbox"
-                      id={item.id}
-                      checked={item.value}
-                      onChange={handleCheckbox}
+                      id={data.id}
+                      checked={data.value}
+                      // onChange={handleCheckbox}
                     />
                   </div>
                 </div>
@@ -146,7 +180,7 @@ const WithdrawalRequest = () => {
                     <span>User ID</span>
                   </div>
                   <div className="ad-text-small-right">
-                    <span>{item.userId}</span>
+                    <span>#{data.user}</span>
                   </div>
                 </div>
                 <div className="ad-text-content">
@@ -154,7 +188,7 @@ const WithdrawalRequest = () => {
                     <span>Requested Amount</span>
                   </div>
                   <div className="ad-text-small-right">
-                    <span>{item.requestedAmount}</span>
+                    <span>₦{data.amount}</span>
                   </div>
                 </div>
                 <div className="ad-text-content">
@@ -162,7 +196,7 @@ const WithdrawalRequest = () => {
                     <span>Balance</span>
                   </div>
                   <div className="ad-text-small-right">
-                    <span>{item.balance}</span>
+                    <span>₦{data.amount}</span>
                   </div>
                 </div>
                 <div className="actions">

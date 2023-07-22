@@ -95,21 +95,21 @@ const AdminNavbar = (props) => {
           </div>
           {isNotifClicked && <NotificationContainer />}
         </div>
-        {userData && userData.profilePicture == 'string' ? (
+        {userData && userData.profilePicture == undefined ? (
           <div
             className="noImage"
             style={{
-              width: '134px',
-              height: '134px',
+              width: '35px',
+              height: '35px',
               textAlign: 'center',
-              background: 'green',
-              fontSize: '50px',
+              background: '#a09ef9',
+              fontSize: '16px',
               textTransform: 'uppercase',
               color: '#ffffff',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: '10px',
+              borderRadius: '50%',
             }}
           >
             {userData.accountName.slice(0, 2)}
