@@ -115,7 +115,6 @@ const SocialAdRequest = ({ socialData }) => {
                     <td>
                       <a
                         href={`mailto:${data.email}`}
-                        target="_blank"
                         style={{
                           color: 'black',
                         }}
@@ -127,6 +126,7 @@ const SocialAdRequest = ({ socialData }) => {
                       <a
                         href={data.socialLink}
                         target="_blank"
+                        rel="noreferrer"
                         style={{
                           color: 'black',
                         }}
@@ -201,7 +201,7 @@ const SocialAdRequest = ({ socialData }) => {
                         type="checkbox"
                         id={data.id}
                         checked={data.value}
-                        onChange={handleCheckbox}
+                        // onChange={handleCheckbox}
                       />
                     </div>
                   </div>
@@ -210,7 +210,17 @@ const SocialAdRequest = ({ socialData }) => {
                       <span>Email Adress</span>
                     </div>
                     <div className="ad-text-small">
-                      <span>{data.email}</span>
+                      <span> <a
+                        href={`mailto:${data.email}`}
+                        style={{
+                          color: 'black',
+                          display: 'block',
+                          marginLeft: 'auto' ,
+                          width: 'fit-content'
+                        }}
+                      >
+                        <TruncatedText maxLength={25} text={data.email} />
+                      </a></span>
                     </div>
                   </div>
                   <div className="ad-text-content">
@@ -219,9 +229,19 @@ const SocialAdRequest = ({ socialData }) => {
                     </div>
                     <div className="ad-text-small">
                       <span>
-                        <Link href={data.socialLink}>
-                          <>{data.socialLink}</>
-                        </Link>{' '}
+                      <a
+                        href={data.socialLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          color: 'black',
+                          display: 'block',
+                          marginLeft: 'auto' ,
+                          width: 'fit-content'
+                        }}
+                      >
+                        <TruncatedText maxLength={25} text={data.socialLink} />
+                      </a>
                       </span>
                     </div>
                   </div>

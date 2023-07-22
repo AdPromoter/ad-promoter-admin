@@ -133,6 +133,7 @@ const VisualAdRequest = ({ visualData }) => {
                         <a
                           href={data.promoter.socialLink}
                           target="_blank"
+                          rel="noreferrer"
                           style={{
                             color: 'black',
                           }}
@@ -263,6 +264,7 @@ const VisualAdRequest = ({ visualData }) => {
                         {data.promoter && (
                           <a
                             href={data.promoter.socialLink}
+                            rel="noreferrer"
                             target="_blank"
                             style={{
                               color: 'black',
