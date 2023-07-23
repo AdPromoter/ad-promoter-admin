@@ -5,24 +5,17 @@ import {
   Container,
 } from '@/components/AdminPages/AdminRequest/request.style';
 import { requestCategories } from '@/data/RequestCategories/requestCategories';
-import profile1 from '@/public/assets/hassan.svg';
-import profile2 from '@/public/assets/mh.svg';
-import profile3 from '@/public/assets/oldlad.svg';
 import {
   VisualAdRequest,
   ReportedAds,
   SocialAdRequest,
   WithdrawalRequest,
 } from '@/components/AdminPages/AdminRequest/categories';
-import arrowUp from '@/public/assets/arrow-up.svg';
-import arrowDown from '@/public/assets/arrow-down.svg';
-import Image from 'next/image';
 import { useWidth } from '@/hooks';
 import UseFetch from '@/hooks/useFetch';
 import PageLoader from '@/components/AdminReusables/PageLoager.jsx/index.jsx';
 import Filter from '@/components/AdminReusables/Filter';
 import Head from 'next/head';
-
 
 const breakpoint = 1024;
 const Settings = () => {
@@ -38,7 +31,6 @@ const Settings = () => {
     if (userToken) {
       setToken(userToken.token);
       setTokenAvailable(true);
-      console.log(userToken.token);
     }
   }, []);
 
@@ -52,6 +44,36 @@ const Settings = () => {
     'https://api.ad-promoter.com/api/v1/reports/reportedAds'
   );
 
+  const {
+    data: responseSocial,
+    pendingSocial,
+    errorSocial,
+  } = UseFetch(
+    token,
+    tokenAvailale,
+    'https://api.ad-promoter.com/api/v1/user/social-requests'
+  );
+
+  const {
+    data: responseVisual,
+    pendingVisual,
+    errorVisual,
+  } = UseFetch(
+    token,
+    tokenAvailale,
+    'https://api.ad-promoter.com/api/v1/promotion/unapproved-visual-promotions'
+  );
+
+  const {
+    data: responseWithdrawal,
+    pendingWithdrawal,
+    errorWithdrawal,
+  } = UseFetch(
+    token,
+    tokenAvailale,
+    'https://api.ad-promoter.com/api/v1/payouts/pending'
+  );
+
   const onShowDropDownHandler = () => {
     setShowDropdown(!showDropdown);
   };
@@ -60,13 +82,7 @@ const Settings = () => {
     setShowDropdown(!showDropdown);
   };
 
-  let reportData = responseData;
-
-  if (pending) {
-    return <PageLoader />;
-  }
-
-  if (error) {
+  if (error || errorSocial || errorVisual || errorWithdrawal) {
     return (
       <h3
         style={{
@@ -82,13 +98,13 @@ const Settings = () => {
     );
   }
 
-  if (!responseData) {
+  if (pending || pendingSocial || pendingVisual || pendingWithdrawal) {
     return <PageLoader />;
   }
 
   return (
     <Container>
-            <Head>
+      <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {responsive ? (
@@ -129,14 +145,14 @@ const Settings = () => {
 
             <div className="contents">
               {selected == 'Visual Ad Request' ? (
-                <VisualAdRequest />
+                <VisualAdRequest visualData={responseVisual} />
               ) : selected == 'Social Ad Request' ? (
-                <SocialAdRequest />
+                <SocialAdRequest socialData={responseSocial} />
               ) : selected == 'Withdrawal Request' ? (
-                <WithdrawalRequest />
+                <WithdrawalRequest withdrawalData={responseWithdrawal} />
               ) : selected == 'Reported Ads' ? (
                 <ReportedAds
-                  reportData={reportData}
+                  reportData={responseData}
                   pending={pending}
                   error={error}
                 />
@@ -184,21 +200,21 @@ const Settings = () => {
             </div>
 
             <Filter
-                onShowDropDown={onShowDropDownHandler}
-                onCloseDropdown={onCloseDropdownHandler}
-                showDropdown={showDropdown}
-              />
+              onShowDropDown={onShowDropDownHandler}
+              onCloseDropdown={onCloseDropdownHandler}
+              showDropdown={showDropdown}
+            />
 
             <div className="contents">
               {selected == 'Visual Ad Request' ? (
-                <VisualAdRequest />
+                <VisualAdRequest visualData={responseVisual} />
               ) : selected == 'Social Ad Request' ? (
-                <SocialAdRequest />
+                <SocialAdRequest socialData={responseSocial} />
               ) : selected == 'Withdrawal Request' ? (
-                <WithdrawalRequest />
+                <WithdrawalRequest withdrawalData={responseWithdrawal} />
               ) : selected == 'Reported Ads' ? (
                 <ReportedAds
-                  reportData={reportData}
+                  reportData={responseData}
                   pending={pending}
                   error={error}
                 />

@@ -7,15 +7,13 @@ import close from '@/public/assets/close-circle-small.svg';
 import { tick, cancel } from '@/public/assets/icon';
 import { useWidth } from '@/hooks';
 import { btnTick, btnCancel } from '@/public/assets/icon';
-import { gridData } from '@/data/RequestData/users';
 import { AdDisplay } from '../request.style';
-
+import Link from 'next/link';
+import TruncatedText from '@/components/AdminReusables/TruncatedText';
 
 const breakpoint = 1024;
-const SocialAdRequest = () => {
+const SocialAdRequest = ({ socialData }) => {
   const { responsive } = useWidth(breakpoint);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [rowData, setRowData] = useState(gridData);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
   const handleCheckbox = (e) => {
@@ -36,6 +34,19 @@ const SocialAdRequest = () => {
     }
   };
 
+  // const validateSocialAd = async () => {
+  //   const response = await fetch(
+  //     'https://api.ad-promoter.com/api/v1/auth/signin',
+  //     {
+  //       method: 'PUT',
+  //       mode: 'cors',
+  //       cache: 'no-cache',
+  //       credentials: 'same-origin',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(request),
+  //     }
+  //   );
+  // };
   return (
     <>
       {responsive ? (
@@ -67,11 +78,11 @@ const SocialAdRequest = () => {
               </tr>
             </thead>
             <tbody>
-              {rowData.map((data) => (
-                <tr className="row" key={data.id}>
-                  <td>{data.id}</td>
-                  <td>
-                    {data.name.map((name, index) => (
+              {socialData &&
+                socialData.data.map((data, index) => (
+                  <tr className="row" key={data._id}>
+                    <td>{index + 1}</td>
+                    <td>
                       <div
                         style={{
                           display: 'flex',
@@ -80,31 +91,67 @@ const SocialAdRequest = () => {
                         }}
                         key={index}
                       >
-                        <Image src={name.profile} alt="profile" />
-                        <p>{name.user}</p>
+                        <div
+                          className="noImage"
+                          style={{
+                            width: '25px',
+                            height: '25px',
+                            textAlign: 'center',
+                            background: '#a09ef9',
+                            fontSize: '10px',
+                            textTransform: 'uppercase',
+                            color: '#ffffff',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '50%',
+                          }}
+                        >
+                          {data.accountName.slice(0, 2)}
+                        </div>
+                        <p>{data.accountName}</p>
                       </div>
-                    ))}
-                  </td>
-                  <td>{data.email}</td>
-                  <td>{data.socialLinks}</td>
-                  <td className="action-space">
-                    <Image src={tick} /> <Image src={cancel} />
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      id={data.id}
-                      checked={data.value}
-                      onChange={handleCheckbox}
-                    />
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td>
+                      <a
+                        href={`mailto:${data.email}`}
+                        style={{
+                          color: 'black',
+                        }}
+                      >
+                        <TruncatedText maxLength={30} text={data.email} />
+                      </a>
+                    </td>
+                    <td>
+                      <a
+                        href={data.socialLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          color: 'black',
+                        }}
+                      >
+                        <TruncatedText maxLength={50} text={data.socialLink} />
+                      </a>
+                    </td>
+                    <td className="action-space">
+                      <Image src={tick} /> <Image src={cancel} />
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        id={data.id}
+                        checked={data.value}
+                        // onChange={handleCheckbox}
+                      />
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
       ) : (
-        <AdDisplay className='ad-display'>
+        <AdDisplay className="ad-display">
           {' '}
           {showBackdrop && <Backdrop onCancel={() => setShowBackdrop(false)} />}
           <UndoContainer
@@ -124,50 +171,96 @@ const SocialAdRequest = () => {
               <Image src={trash} alt="trash" />
             </div>
 
-            {gridData.map((item) => (
-              <div className="ad-column" key={item.id}>
-                <div className="ad-content">
-                  <div className="ad-inner">
-                    <Image src={item.name[0].profile} alt="trash" />
-                    <span>{item.name[0].user}</span>
+            {socialData &&
+              socialData.data.map((data) => (
+                <div className="ad-column" key={data._id}>
+                  <div className="ad-content">
+                    <div className="ad-inner">
+                      <div
+                        className="noImage"
+                        style={{
+                          width: '25px',
+                          height: '25px',
+                          textAlign: 'center',
+                          background: '#a09ef9',
+                          fontSize: '12px',
+                          textTransform: 'uppercase',
+                          color: '#ffffff',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderRadius: '50%',
+                        }}
+                      >
+                        {data.accountName.slice(0, 2)}
+                      </div>{' '}
+                      <span>{data.accountName}</span>
+                    </div>
+                    <div>
+                      <input
+                        type="checkbox"
+                        id={data.id}
+                        checked={data.value}
+                        // onChange={handleCheckbox}
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      id={item.id}
-                      checked={item.value}
-                      onChange={handleCheckbox}
-                    />
+                  <div className="ad-text-content">
+                    <div className="ad-text-smaller">
+                      <span>Email Adress</span>
+                    </div>
+                    <div className="ad-text-small">
+                      <span> <a
+                        href={`mailto:${data.email}`}
+                        style={{
+                          color: 'black',
+                          display: 'block',
+                          marginLeft: 'auto' ,
+                          width: 'fit-content'
+                        }}
+                      >
+                        <TruncatedText maxLength={25} text={data.email} />
+                      </a></span>
+                    </div>
+                  </div>
+                  <div className="ad-text-content">
+                    <div className="ad-text-smaller">
+                      <span>Social links</span>
+                    </div>
+                    <div className="ad-text-small">
+                      <span>
+                      <a
+                        href={data.socialLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          color: 'black',
+                          display: 'block',
+                          marginLeft: 'auto' ,
+                          width: 'fit-content'
+                        }}
+                      >
+                        <TruncatedText maxLength={25} text={data.socialLink} />
+                      </a>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="actions">
+                    <button className="sec">
+                      <Image
+                        src={btnCancel}
+                        alt="Wallet Icon"
+                        className="img"
+                      />
+                      <span>Decline </span>
+                    </button>
+                    <button>
+                      <Image src={btnTick} alt="Wallet Icon" className="img" />
+                      <span>Accept </span>
+                    </button>
                   </div>
                 </div>
-                <div className="ad-text-content">
-                  <div className="ad-text-smaller">
-                    <span>Email Adress</span>
-                  </div>
-                  <div className="ad-text-small">
-                    <span>{item.email}</span>
-                  </div>
-                </div>
-                <div className="ad-text-content">
-                  <div className="ad-text-smaller">
-                    <span>Social links</span>
-                  </div>
-                  <div className="ad-text-small">
-                    <span>{item.socialLinks}</span>
-                  </div>
-                </div>
-                <div className="actions">
-                  <button className="sec">
-                    <Image src={btnCancel} alt="Wallet Icon" className="img" />
-                    <span>Decline </span>
-                  </button>
-                  <button>
-                    <Image src={btnTick} alt="Wallet Icon" className="img" />
-                    <span>Accept </span>
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </AdDisplay>
       )}{' '}

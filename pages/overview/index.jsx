@@ -42,7 +42,12 @@ const Index = () => {
     if (userToken && !userToken.success) {
       router.push('/login');
     }
+
+    console.log(userToken)
+
   }, []);
+
+
 
   // User Data
   const { data: userData } = UseFetch(
@@ -134,7 +139,7 @@ const Index = () => {
     {
       icon: profileDelete,
       name: 'Blocklisted Users',
-      num: 'null',
+      num: 'no data',
       bg: '#FBC4BC',
       shadow: '1px 2px 4px rgba(33, 76, 95, 0.2)',
     },
