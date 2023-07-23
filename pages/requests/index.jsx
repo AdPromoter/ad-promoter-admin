@@ -145,11 +145,11 @@ const Settings = () => {
 
             <div className="contents">
               {selected == 'Visual Ad Request' ? (
-                <VisualAdRequest visualData={responseVisual} />
+                <VisualAdRequest visualData={responseVisual} token={token}/>
               ) : selected == 'Social Ad Request' ? (
-                <SocialAdRequest socialData={responseSocial} />
+                <SocialAdRequest socialData={responseSocial} token={token}/>
               ) : selected == 'Withdrawal Request' ? (
-                <WithdrawalRequest withdrawalData={responseWithdrawal} />
+                <WithdrawalRequest withdrawalData={responseWithdrawal} token={token}/>
               ) : selected == 'Reported Ads' ? (
                 <ReportedAds
                   reportData={responseData}
@@ -207,11 +207,11 @@ const Settings = () => {
 
             <div className="contents">
               {selected == 'Visual Ad Request' ? (
-                <VisualAdRequest visualData={responseVisual} />
+                <VisualAdRequest visualData={responseVisual} token={token}/>
               ) : selected == 'Social Ad Request' ? (
-                <SocialAdRequest socialData={responseSocial} />
+                <SocialAdRequest socialData={responseSocial} token={token}/>
               ) : selected == 'Withdrawal Request' ? (
-                <WithdrawalRequest withdrawalData={responseWithdrawal} />
+                <WithdrawalRequest withdrawalData={responseWithdrawal} token={token}/>
               ) : selected == 'Reported Ads' ? (
                 <ReportedAds
                   reportData={responseData}

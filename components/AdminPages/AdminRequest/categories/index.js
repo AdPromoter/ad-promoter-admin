@@ -4,3 +4,4 @@ import SocialAdRequest from './SocialAdRequest';
 import WithdrawalRequest from './WithdrawalRequest';
 
 export { VisualAdRequest, ReportedAds, SocialAdRequest, WithdrawalRequest };
+
