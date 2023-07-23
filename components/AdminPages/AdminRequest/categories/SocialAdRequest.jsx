@@ -8,27 +8,50 @@ import { tick, cancel } from '@/public/assets/icon';
 import { useWidth } from '@/hooks';
 import { btnTick, btnCancel } from '@/public/assets/icon';
 import { AdDisplay } from '../request.style';
-import Link from 'next/link';
 import TruncatedText from '@/components/AdminReusables/TruncatedText';
 
 const breakpoint = 1024;
-const SocialAdRequest = ({ socialData }) => {
+const SocialAdRequest = ({ socialData, token }) => {
   const { responsive } = useWidth(breakpoint);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
-  const handleCheckbox = (e) => {
-    const id = e.target.id;
-    const data = [...rowData];
-    const checkedValue = data.map((data) =>
-      data.id === +id ? { ...data, value: !data.value } : data
+  console.log(socialData);
+
+  const handleCheckbox = () => {
+    // const id = e.target.id;
+    // const data = [...rowData];
+    // const checkedValue = data.map((data) =>
+    //   data.id === +id ? { ...data, value: !data.value } : data
+    // );
+    // setRowData(checkedValue);
+    // https://api.ad-promoter.com/api/v1/user/social-requests/update/10f6219b-7d22-425e-84b5-a2beafac42d3?status=true
+  };
+
+  const handleValidation = async (data, userId) => {
+
+    console.log(data)
+    console.log(userId)
+    console.log(token)
+    const response = await fetch(
+      `https://api.ad-promoter.com/api/v1/user/social-requests/update/${userId}?status=${data}`,
+      {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        Authorization: `Bearer ${token}`,
+      }
     );
-    setRowData(checkedValue);
+
+    console.log(response);
   };
 
   const handleDelete = () => {
     const data = [...rowData];
     const rows = data.filter((item) => !item.value);
     setRowData(rows);
+
     if (rows.length !== data.length) {
       setShowBackdrop(true);
     }
@@ -47,6 +70,7 @@ const SocialAdRequest = ({ socialData }) => {
   //     }
   //   );
   // };
+
   return (
     <>
       {responsive ? (
@@ -135,7 +159,14 @@ const SocialAdRequest = ({ socialData }) => {
                       </a>
                     </td>
                     <td className="action-space">
-                      <Image src={tick} /> <Image src={cancel} />
+                      <Image
+                        src={tick}
+                        onClick={() => handleValidation(true, data.userID)}
+                      />{' '}
+                      <Image
+                        src={cancel}
+                        onClick={() => handleValidation(false, userID)}
+                      />
                     </td>
                     <td>
                       <input
@@ -210,17 +241,20 @@ const SocialAdRequest = ({ socialData }) => {
                       <span>Email Adress</span>
                     </div>
                     <div className="ad-text-small">
-                      <span> <a
-                        href={`mailto:${data.email}`}
-                        style={{
-                          color: 'black',
-                          display: 'block',
-                          marginLeft: 'auto' ,
-                          width: 'fit-content'
-                        }}
-                      >
-                        <TruncatedText maxLength={25} text={data.email} />
-                      </a></span>
+                      <span>
+                        {' '}
+                        <a
+                          href={`mailto:${data.email}`}
+                          style={{
+                            color: 'black',
+                            display: 'block',
+                            marginLeft: 'auto',
+                            width: 'fit-content',
+                          }}
+                        >
+                          <TruncatedText maxLength={25} text={data.email} />
+                        </a>
+                      </span>
                     </div>
                   </div>
                   <div className="ad-text-content">
@@ -229,19 +263,22 @@ const SocialAdRequest = ({ socialData }) => {
                     </div>
                     <div className="ad-text-small">
                       <span>
-                      <a
-                        href={data.socialLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          color: 'black',
-                          display: 'block',
-                          marginLeft: 'auto' ,
-                          width: 'fit-content'
-                        }}
-                      >
-                        <TruncatedText maxLength={25} text={data.socialLink} />
-                      </a>
+                        <a
+                          href={data.socialLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{
+                            color: 'black',
+                            display: 'block',
+                            marginLeft: 'auto',
+                            width: 'fit-content',
+                          }}
+                        >
+                          <TruncatedText
+                            maxLength={25}
+                            text={data.socialLink}
+                          />
+                        </a>
                       </span>
                     </div>
                   </div>

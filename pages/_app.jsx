@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
   const ProtectedComponent = withAuth(Component);
 
   return (
-    <>
+    <div style={{backgroundColor : '#FAFAFA'}}>
       <Head>
         <title>AD - PROMOTER</title>
         <meta
@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }) {
           </SignupProvider>
         </NotificationProvider>
       </AuthContextProvider>
-    </>
+    </div>
   );
 }
 
