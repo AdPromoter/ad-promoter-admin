@@ -4,7 +4,7 @@ function TruncatedText({ text, maxLength, className }) {
   const [truncatedText, setTruncatedText] = useState(text);
 
   useEffect(() => {
-    if (text.length > maxLength) {
+    if (text && text.length > maxLength) {
       setTruncatedText(text.substring(0, maxLength - 3) + '...');
     } else {
       setTruncatedText(text);

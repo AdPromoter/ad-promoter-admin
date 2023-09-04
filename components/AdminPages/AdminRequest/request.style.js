@@ -173,6 +173,10 @@ const Container = styled.div`
     .action-space {
       letter-spacing: 10px;
     }
+    .action-btn {
+      cursor: pointer;
+    }
+
   }
 `;
 

@@ -10,10 +10,12 @@ import { btnTick, btnCancel } from '@/public/assets/icon';
 import { AdDisplay } from '../request.style';
 import Link from 'next/link';
 import TruncatedText from '@/components/AdminReusables/TruncatedText';
+import { toast } from 'react-hot-toast';
 
 const breakpoint = 1024;
-const VisualAdRequest = ({ visualData }) => {
+const VisualAdRequest = ({ visualData, token }) => {
   const { responsive } = useWidth(breakpoint);
+  // const [visualDataState, setVisualDataState] = useState(visualData);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
   const handleCheckbox = (e) => {
@@ -23,6 +25,44 @@ const VisualAdRequest = ({ visualData }) => {
       data.id === +id ? { ...data, value: !data.value } : data
     );
     setRowData(checkedValue);
+  };
+
+  const handleValidation = async (data, userId) => {
+    try {
+      console.log(data);
+      console.log(userId);
+      console.log(token);
+
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/promotion/update-visual/${userId}?status=${data}`,
+        {
+          method: 'PUT',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const json = await response.json();
+      const data = json;
+
+      console.log(data);
+
+
+      if (data) {
+        toast.success('Visual ad request accepted successfully');
+      } else if (!data) {
+        toast.success('Visual ad request declined successfully');
+      }
+
+      // setVisualDataState(visualData);
+    } catch (error) {
+      toast.error("Visual ad request failed to process");
+      console.log(error);
+    }
   };
 
   const handleDelete = () => {
@@ -146,7 +186,18 @@ const VisualAdRequest = ({ visualData }) => {
                       )}
                     </td>
                     <td className="action-space">
-                      <Image src={tick} /> <Image src={cancel} />
+                      <span className="action-btn">
+                        <Image
+                          src={tick}
+                          onClick={() => handleValidation('approved', data._id)}
+                        />{' '}
+                      </span>
+                      <span className="action-btn">
+                        <Image
+                          src={cancel}
+                          onClick={() => handleValidation('declined', data._id)}
+                        />
+                      </span>{' '}
                     </td>
                     <td>
                       <input
@@ -285,11 +336,17 @@ const VisualAdRequest = ({ visualData }) => {
                         src={btnCancel}
                         alt="Wallet Icon"
                         className="img"
+                        onClick={() => handleValidation('declined', data._id)}
                       />
                       <span>Decline </span>
                     </button>
                     <button>
-                      <Image src={btnTick} alt="Wallet Icon" className="img" />
+                      <Image
+                        src={btnTick}
+                        alt="Wallet Icon"
+                        className="img"
+                        onClick={() => handleValidation('approved', data._id)}
+                      />
                       <span>Accept </span>
                     </button>
                   </div>

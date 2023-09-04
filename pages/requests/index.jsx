@@ -155,6 +155,7 @@ const Settings = () => {
                   reportData={responseData}
                   pending={pending}
                   error={error}
+                  token={token}
                 />
               ) : (
                 ''
@@ -217,6 +218,7 @@ const Settings = () => {
                   reportData={responseData}
                   pending={pending}
                   error={error}
+                  token={token}
                 />
               ) : (
                 ''

@@ -9,9 +9,10 @@ import { useWidth } from '@/hooks';
 import { btnTick, btnCancel } from '@/public/assets/icon';
 import { AdDisplay } from '../request.style';
 import TruncatedText from '@/components/AdminReusables/TruncatedText';
+import { toast } from 'react-hot-toast';
 
 const breakpoint = 1024;
-const WithdrawalRequest = ({ withdrawalData }) => {
+const WithdrawalRequest = ({ withdrawalData, token }) => {
   const { responsive } = useWidth(breakpoint);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
@@ -24,6 +25,47 @@ const WithdrawalRequest = ({ withdrawalData }) => {
     setRowData(checkedValue);
   };
 
+  const handleValidation = async (data, payoutId) => {
+    try {
+      console.log(data);
+      console.log(payoutId);
+      console.log(token);
+
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/payouts/process/${payoutId}?status=${data}`,
+        {
+          method: 'PUT',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const json = await response.json();
+      const data = json;
+
+      console.log(data);
+
+
+      if (data.success == "true") {
+        toast.success('Withdrawal request accepted successfully');
+      } 
+      
+      if (data.success == "false") {
+        toast.error('Withdrawal request failed to process');
+      }
+
+      // setSocialDataState(socialData);
+    } catch (error) {
+      toast.error("Withdrawal request failed to process");
+      console.log(error);
+    }
+  };
+
   const handleDelete = () => {
     const data = [...rowData];
     const rows = data.filter((item) => !item.value);
@@ -32,6 +74,8 @@ const WithdrawalRequest = ({ withdrawalData }) => {
       setShowBackdrop(true);
     }
   };
+
+  console.log(withdrawalData);
 
   return (
     <>
@@ -104,7 +148,18 @@ const WithdrawalRequest = ({ withdrawalData }) => {
                   <td>₦{data.amount}</td>
                   <td>₦{data.amount}</td>
                   <td className="action-space">
-                    <Image src={tick} /> <Image src={cancel} />
+                    <span className="action-btn">
+                      <Image
+                        src={tick}
+                        onClick={() => handleValidation('approved', data.user)}
+                      />{' '}
+                    </span>
+                    <span className="action-btn">
+                      <Image
+                        src={cancel}
+                        onClick={() => handleValidation('rejected', data.user)}
+                      />
+                    </span>{' '}
                   </td>
                   <td>
                     <input
@@ -201,11 +256,21 @@ const WithdrawalRequest = ({ withdrawalData }) => {
                 </div>
                 <div className="actions">
                   <button className="sec">
-                    <Image src={btnCancel} alt="Wallet Icon" className="img" />
+                    <Image
+                      src={btnCancel}
+                      alt="Wallet Icon"
+                      className="img"
+                      onClick={() => handleValidation('rejected', data._id)}
+                    />
                     <span>Decline </span>
                   </button>
                   <button>
-                    <Image src={btnTick} alt="Wallet Icon" className="img" />
+                    <Image
+                      src={btnTick}
+                      alt="Wallet Icon"
+                      className="img"
+                      onClick={() => handleValidation('approved', data._id)}
+                    />
                     <span>Accept </span>
                   </button>
                 </div>
