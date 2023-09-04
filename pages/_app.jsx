@@ -13,7 +13,8 @@ import { Toaster } from 'react-hot-toast';
 function withAuth(Component) {
   return function AuthenticatedComponent(props) {
     const router = useRouter();
-    const [token, setToken] = useState(true);
+    const [token, setToken] = useState(true
+      );
     useEffect(() => { 
       const userToken = JSON.parse(localStorage.getItem('user'));
 

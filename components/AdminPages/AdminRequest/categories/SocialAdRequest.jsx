@@ -9,42 +9,63 @@ import { useWidth } from '@/hooks';
 import { btnTick, btnCancel } from '@/public/assets/icon';
 import { AdDisplay } from '../request.style';
 import TruncatedText from '@/components/AdminReusables/TruncatedText';
+import { toast } from 'react-hot-toast';
 
 const breakpoint = 1024;
 const SocialAdRequest = ({ socialData, token }) => {
   const { responsive } = useWidth(breakpoint);
   const [showBackdrop, setShowBackdrop] = useState(false);
-
+  // const [socialDataState, setSocialDataState] = useState(socialData);
   console.log(socialData);
 
   const handleCheckbox = () => {
-    // const id = e.target.id;
-    // const data = [...rowData];
-    // const checkedValue = data.map((data) =>
-    //   data.id === +id ? { ...data, value: !data.value } : data
-    // );
-    // setRowData(checkedValue);
+    const id = e.target.id;
+    const data = [...rowData];
+    const checkedValue = data.map((data) =>
+      data.id === +id ? { ...data, value: !data.value } : data
+    );
+    setRowData(checkedValue);
     // https://api.ad-promoter.com/api/v1/user/social-requests/update/10f6219b-7d22-425e-84b5-a2beafac42d3?status=true
   };
 
   const handleValidation = async (data, userId) => {
+    try {
+      console.log(data);
+      console.log(userId);
+      console.log(token);
 
-    console.log(data)
-    console.log(userId)
-    console.log(token)
-    const response = await fetch(
-      `https://api.ad-promoter.com/api/v1/user/social-requests/update/${userId}?status=${data}`,
-      {
-        method: 'PUT',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `https://api.ad-promoter.com/api/v1/user/social-requests/update/${userId}?status=${data}`,
+        {
+          method: 'PUT',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const json = await response.json();
+      const data = json;
+
+      // setReportedAd(data);
+      console.log(data);
+
+
+      if (data) {
+        toast.success('Social ad request accepted successfully');
+      } else if (!data) {
+        toast.success('Social ad request declined successfully');
       }
-    );
 
-    console.log(response);
+      // setSocialDataState(socialData);
+    } catch (error) {
+      toast.error("Social ad request failed to process");
+      console.log(error);
+    }
   };
 
   const handleDelete = () => {
@@ -56,20 +77,6 @@ const SocialAdRequest = ({ socialData, token }) => {
       setShowBackdrop(true);
     }
   };
-
-  // const validateSocialAd = async () => {
-  //   const response = await fetch(
-  //     'https://api.ad-promoter.com/api/v1/auth/signin',
-  //     {
-  //       method: 'PUT',
-  //       mode: 'cors',
-  //       cache: 'no-cache',
-  //       credentials: 'same-origin',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(request),
-  //     }
-  //   );
-  // };
 
   return (
     <>
@@ -158,15 +165,20 @@ const SocialAdRequest = ({ socialData, token }) => {
                         <TruncatedText maxLength={50} text={data.socialLink} />
                       </a>
                     </td>
+                    {console.log(data)}
                     <td className="action-space">
-                      <Image
-                        src={tick}
-                        onClick={() => handleValidation(true, data.userID)}
-                      />{' '}
-                      <Image
-                        src={cancel}
-                        onClick={() => handleValidation(false, userID)}
-                      />
+                      <span className="action-btn">
+                        <Image
+                          src={tick}
+                          onClick={() => handleValidation(true, data._id)}
+                        />{' '}
+                      </span>
+                      <span className="action-btn">
+                        <Image
+                          src={cancel}
+                          onClick={() => handleValidation(false, data._id)}
+                        />
+                      </span>
                     </td>
                     <td>
                       <input
@@ -283,16 +295,22 @@ const SocialAdRequest = ({ socialData, token }) => {
                     </div>
                   </div>
                   <div className="actions">
-                    <button className="sec">
+                    <button>
                       <Image
                         src={btnCancel}
                         alt="Wallet Icon"
                         className="img"
+                        onClick={() => handleValidation(false, data._id)}
                       />
                       <span>Decline </span>
                     </button>
                     <button>
-                      <Image src={btnTick} alt="Wallet Icon" className="img" />
+                      <Image
+                        src={btnTick}
+                        alt="Wallet Icon"
+                        className="img"
+                        onClick={() => handleValidation(true, data._id)}
+                      />
                       <span>Accept </span>
                     </button>
                   </div>
