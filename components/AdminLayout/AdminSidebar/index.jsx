@@ -14,6 +14,10 @@ const AdminSidebar = (props) => {
         {links.map(({ name, link, icon }) => {
           const Icon = icon;
 
+          if (props.user.role === 'sub admin' && name === 'wallet') {
+            return;
+          }
+
           return (
             <div className="link" key={link}>
               <Link href={link}>
