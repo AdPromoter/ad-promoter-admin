@@ -20,29 +20,6 @@ const AdminNavbar = (props) => {
     animate: { width: '60px', transition: { duration: 0.5 } },
     stop: { width: 0 },
   };
-  const [token, setToken] = useState(true);
-  const [tokenAvailale, setTokenAvailable] = useState(false);
-
-  useEffect(() => {
-    const userToken = JSON.parse(localStorage.getItem('user'));
-
-    if (userToken) {
-      setToken(userToken.token);
-      console.log(userToken);
-      setTokenAvailable(true);
-    }
-  }, []);
-
-  // User Data
-  const {
-    data: userData,
-    pending: userPending,
-    error: userError,
-  } = UseFetch(
-    token,
-    tokenAvailale,
-    'https://api.ad-promoter.com/api/v1/user'
-  );
 
   return (
     <StyledNavBar>
@@ -69,20 +46,26 @@ const AdminNavbar = (props) => {
       </div>
 
       <div className="links">
-        {links.map(({ name, link }) => (
-          <div className="link" key={link}>
-            <Link href={link}>
-              <a className={router.pathname === link ? 'activeLink' : ''}>
-                {name}
-              </a>
-            </Link>
-            <motion.div
-              className={router.pathname === link ? 'bottom-dash' : ''}
-              variants={variants}
-              animate={router.pathname === link ? 'animate' : 'stop'}
-            ></motion.div>
-          </div>
-        ))}
+        {links.map(({ name, link }) => {
+          if (props.user && props.user.role === 'sub admin' && name === 'wallet') {
+            return;
+          }
+
+          return (
+            <div className="link" key={link}>
+              <Link href={link}>
+                <a className={router.pathname === link ? 'activeLink' : ''}>
+                  {name}
+                </a>
+              </Link>
+              <motion.div
+                className={router.pathname === link ? 'bottom-dash' : ''}
+                variants={variants}
+                animate={router.pathname === link ? 'animate' : 'stop'}
+              ></motion.div>
+            </div>
+          );
+        })}
       </div>
 
       <div className="profile">
@@ -95,7 +78,7 @@ const AdminNavbar = (props) => {
           </div>
           {isNotifClicked && <NotificationContainer />}
         </div>
-        {userData && userData.profilePicture == undefined ? (
+        {props.user && props.user.profilePicture == undefined ? (
           <div
             className="noImage"
             style={{
@@ -112,11 +95,11 @@ const AdminNavbar = (props) => {
               borderRadius: '50%',
             }}
           >
-            {userData.accountName.slice(0, 2)}
+            {props.user.accountName.slice(0, 2)}
           </div>
         ) : (
           <Image
-            src={userData?.profilePicture}
+            src={props.user?.profilePicture}
             alt="profile"
             width={50}
             height={50}

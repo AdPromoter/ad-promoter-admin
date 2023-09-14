@@ -21,6 +21,7 @@ const Login = () => {
   const [userRole, setUserRole] = useState('');
   const { setIsInputWithValue } = useContext(SignupContext);
   const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState()
 
   useEffect(() => {
     const userRole = JSON.parse(localStorage.getItem('token'));
