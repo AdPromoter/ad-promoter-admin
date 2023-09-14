@@ -14,7 +14,6 @@ const AdminLayout = ({ children }) => {
 
     if (userToken) {
       setToken(userToken.token);
-      console.log(userToken);
       setTokenAvailable(true);
     }
   }, []);
@@ -27,7 +26,6 @@ const AdminLayout = ({ children }) => {
   } = UseFetch(token, tokenAvailale, 'https://api.ad-promoter.com/api/v1/user');
 
   const user = userData && userData;
-  console.log(user);
 
   const onOpenMenuHandler = () =>
   {
