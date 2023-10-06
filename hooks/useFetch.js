@@ -20,6 +20,7 @@ const UseFetch = (token, tokenAvailale, api) => {
         console.log('fetching');
         const json = await response.json();
         const data = json;
+        console.log(data);
         setData(data.data);
         setPending(false);
       } catch (error) {
@@ -31,7 +32,7 @@ const UseFetch = (token, tokenAvailale, api) => {
     if (tokenAvailale) {
       fetchData();
     }
-  }, [token, tokenAvailale]);
+  }, [api, token, tokenAvailale]);
   return { data, pending, error };
 };
 

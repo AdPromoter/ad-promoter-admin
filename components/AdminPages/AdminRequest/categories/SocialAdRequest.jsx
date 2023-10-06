@@ -25,17 +25,13 @@ const SocialAdRequest = ({ socialData, token }) => {
       data.id === +id ? { ...data, value: !data.value } : data
     );
     setRowData(checkedValue);
-    // https://api.ad-promoter.com/api/v1/user/social-requests/update/10f6219b-7d22-425e-84b5-a2beafac42d3?status=true
   };
 
-  const handleValidation = async (data, userId) => {
+  const handleValidation = async (status, userId) => {
+    console.log(status);
     try {
-      console.log(data);
-      console.log(userId);
-      console.log(token);
-
       const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/user/social-requests/update/${userId}?status=${data}`,
+        `https://api.ad-promoter.com/api/v1/user/social-requests/update/${userId}?status=${status}`,
         {
           method: 'PUT',
           mode: 'cors',
@@ -51,16 +47,20 @@ const SocialAdRequest = ({ socialData, token }) => {
       const json = await response.json();
       const data = json;
 
-      // setReportedAd(data);
-      console.log(data);
-
-
-      if (data) {
-        toast.success('Social ad request accepted successfully');
-      } else if (!data) {
-        toast.success('Social ad request declined successfully');
+      if(response.ok){
+        // setReportedAd(data);
+        console.log(data);
+  
+  
+        if (status) {
+          toast.success('Social ad request accepted successfully');
+        } else if (!status) {
+          toast.success('Social ad request declined successfully');
+        }
       }
-
+      if(!response.ok){
+        toast.error("Social ad request failed to process");
+      }
       // setSocialDataState(socialData);
     } catch (error) {
       toast.error("Social ad request failed to process");
@@ -171,12 +171,14 @@ const SocialAdRequest = ({ socialData, token }) => {
                         <Image
                           src={tick}
                           onClick={() => handleValidation(true, data._id)}
+                          alt=''
                         />{' '}
                       </span>
                       <span className="action-btn">
                         <Image
                           src={cancel}
                           onClick={() => handleValidation(false, data._id)}
+                          alt=''
                         />
                       </span>
                     </td>
@@ -210,7 +212,7 @@ const SocialAdRequest = ({ socialData, token }) => {
           </UndoContainer>
           <div className="ad-group">
             <div className="ad-header">
-              <h3>Social Ad Request (10)</h3>
+              <h3>Social Ad Request</h3>
               <Image src={trash} alt="trash" />
             </div>
 

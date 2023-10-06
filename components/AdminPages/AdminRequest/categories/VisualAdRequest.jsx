@@ -4,7 +4,7 @@ import Backdrop from '@/components/DiscoveryFolder/ReportModal/Backdrop';
 import { UndoContainer } from '../../AdminActivities/adminActivities.style';
 import trash from '@/public/assets/trash.svg';
 import close from '@/public/assets/close-circle-small.svg';
-import { tick, cancel } from '@/public/assets/icon';
+import { tick, cancel, status } from '@/public/assets/icon';
 import { useWidth } from '@/hooks';
 import { btnTick, btnCancel } from '@/public/assets/icon';
 import { AdDisplay } from '../request.style';
@@ -27,14 +27,12 @@ const VisualAdRequest = ({ visualData, token }) => {
     setRowData(checkedValue);
   };
 
-  const handleValidation = async (data, userId) => {
+  const handleValidation = async (status, userId) => {
+    console.log(status);
+    console.log(userId);
     try {
-      console.log(data);
-      console.log(userId);
-      console.log(token);
-
       const response = await fetch(
-        `https://api.ad-promoter.com/api/v1/promotion/update-visual/${userId}?status=${data}`,
+        `https://api.ad-promoter.com/api/v1/promotion/update-visual/${userId}?status=${status}`,
         {
           method: 'PUT',
           mode: 'cors',
@@ -49,16 +47,22 @@ const VisualAdRequest = ({ visualData, token }) => {
       const json = await response.json();
       const data = json;
 
-      console.log(data);
-
-
-      if (data) {
-        toast.success('Visual ad request accepted successfully');
-      } else if (!data) {
-        toast.success('Visual ad request declined successfully');
+      if(response.ok){
+        console.log(data);
+        if (status === 'approved') {
+          toast.success('Visual ad request accepted successfully');
+        } else if (status === 'declined') {
+          toast.success('Visual ad request declined successfully');
+        }
       }
 
-      // setVisualDataState(visualData);
+      if(!response.ok){
+        toast.error("Visual ad request failed to process");
+        console.log(error);
+      }
+
+
+
     } catch (error) {
       toast.error("Visual ad request failed to process");
       console.log(error);
@@ -171,7 +175,7 @@ const VisualAdRequest = ({ visualData, token }) => {
                     <td>
                       {data.promoter && (
                         <a
-                          href={data.promoter.socialLink}
+                          href={data.link}
                           target="_blank"
                           rel="noreferrer"
                           style={{
@@ -180,7 +184,7 @@ const VisualAdRequest = ({ visualData, token }) => {
                         >
                           <TruncatedText
                             maxLength={50}
-                            text={data.promoter.socialLink}
+                            text={data.link}
                           />
                         </a>
                       )}
@@ -190,12 +194,14 @@ const VisualAdRequest = ({ visualData, token }) => {
                         <Image
                           src={tick}
                           onClick={() => handleValidation('approved', data._id)}
+                          alt=''
                         />{' '}
                       </span>
                       <span className="action-btn">
                         <Image
                           src={cancel}
                           onClick={() => handleValidation('declined', data._id)}
+                          alt=''
                         />
                       </span>{' '}
                     </td>
@@ -229,7 +235,7 @@ const VisualAdRequest = ({ visualData, token }) => {
           </UndoContainer>
           <div className="ad-group">
             <div className="ad-header">
-              <h3>Visual Ad Request (10)</h3>
+              <h3>Visual Ad Request</h3>
               <Image src={trash} alt="trash" />
             </div>
 
@@ -314,7 +320,7 @@ const VisualAdRequest = ({ visualData, token }) => {
                       <span>
                         {data.promoter && (
                           <a
-                            href={data.promoter.socialLink}
+                            href={data.link}
                             rel="noreferrer"
                             target="_blank"
                             style={{
@@ -323,7 +329,7 @@ const VisualAdRequest = ({ visualData, token }) => {
                           >
                             <TruncatedText
                               maxLength={25}
-                              text={data.promoter.socialLink}
+                              text={data.link}
                             />
                           </a>
                         )}
