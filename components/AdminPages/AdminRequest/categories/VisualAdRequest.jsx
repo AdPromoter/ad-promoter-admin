@@ -11,12 +11,13 @@ import { AdDisplay } from '../request.style';
 import Link from 'next/link';
 import TruncatedText from '@/components/AdminReusables/TruncatedText';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const breakpoint = 1024;
 const VisualAdRequest = ({ visualData, token }) => {
   const { responsive } = useWidth(breakpoint);
-  // const [visualDataState, setVisualDataState] = useState(visualData);
   const [showBackdrop, setShowBackdrop] = useState(false);
+  const router = useRouter()
 
   const handleCheckbox = (e) => {
     const id = e.target.id;
@@ -26,6 +27,8 @@ const VisualAdRequest = ({ visualData, token }) => {
     );
     setRowData(checkedValue);
   };
+
+  console.log(visualData);
 
   const handleValidation = async (status, userId) => {
     console.log(status);
@@ -101,8 +104,9 @@ const VisualAdRequest = ({ visualData, token }) => {
                 <th>S/N</th>
                 <th>Name</th>
                 <th>Email Address</th>
-                <th>social Link</th>
+                <th>Social Link</th>
                 <th>Action</th>
+                <th>Ad Source</th>
                 <th onClick={handleDelete}>
                   <Image src={trash} alt="trash" />
                 </th>
@@ -205,6 +209,10 @@ const VisualAdRequest = ({ visualData, token }) => {
                         />
                       </span>{' '}
                     </td>
+                    <td>
+                      <button onClick={()=>router.push((`/ad/${data.ad}`))} style={{display: 'flex',justifyContent:'center',alignItems:'center',padding:'0.8rem 2.4rem',background:'#f9f5ff',borderRadius: '0.8rem',fontWeight:'600',fontSize:'1.4rem',color:'#4F00CF',cursor: 'pointer'}} className='cta' >View</button>
+                    </td>
+
                     <td>
                       <input
                         type="checkbox"
@@ -333,6 +341,16 @@ const VisualAdRequest = ({ visualData, token }) => {
                             />
                           </a>
                         )}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="ad-text-content">
+                    <div className="ad-text-smaller">
+                      <span>Source Ad</span>
+                    </div>
+                    <div className="ad-text-small">
+                      <span>
+                      <button onClick={()=>router.push((`/ad/${data.ad}`))} style={{display: 'flex',justifyContent:'center',alignItems:'center',padding:'0.8rem 2.4rem',background:'#f9f5ff',borderRadius: '0.8rem',fontWeight:'600',fontSize:'1.4rem',color:'#4F00CF',cursor: 'pointer'}} className='cta' >View</button>
                       </span>
                     </div>
                   </div>

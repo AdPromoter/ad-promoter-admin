@@ -73,6 +73,20 @@ export const Container = styled.div`
 
     td {
       padding: 1.5rem;
+      /* .cta {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0.8rem 2.4rem;
+        background: #f9f5ff;
+        border-radius: 0.8rem;
+        font-weight: 600;
+        font-size: 1.4rem;
+        line-height: 2.1rem;
+        color: var(--primary);
+        cursor: pointer;
+      } */
     }
   }
 `;
